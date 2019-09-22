@@ -53,7 +53,7 @@ class Watershed(object):
       current_level = 0
 
       # Get the indices that deleimit pixels with different values.
-      for i in xrange(total):
+      for i in range(total):
          if sorted_image[i] > levels[current_level]:
             # Skip levels until the next highest one is reached.
             while sorted_image[i] > levels[current_level]: current_level += 1
@@ -114,15 +114,16 @@ class Watershed(object):
       return labels
 
 if __name__ == "__main__":
-   import sys
+
+   import numpy as np
+   ##from Watershed import Watershed
    from PIL import Image
    import matplotlib.pyplot as plt
-   from scipy.misc import imsave
+   import cv2
 
    w = Watershed()
-   image = np.array(Image.open(sys.argv[1]))
+   image = np.array(cv2.imread('Ex1.PNG', 0))
    labels = w.apply(image)
-   imsave('ws.png', labels)
-   # plt.imshow(labels, cmap='Paired', interpolation='nearest')
-   # plt.show()
+   plt.imshow(labels, cmap='Paired', interpolation='nearest')
+   plt.show()
 
