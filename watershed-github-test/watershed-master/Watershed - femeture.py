@@ -1,5 +1,8 @@
 import numpy as np
 from collections import deque
+import cv2
+
+
 
 
 # Implementation of:
@@ -36,6 +39,8 @@ class Watershed(object):
         [2, 1],
         [2, 2]])
     '''
+
+
 
     def apply(self, image):
         current_label = 0
@@ -143,9 +148,21 @@ if __name__ == "__main__":
 
     w = Watershed()
     image = np.array(cv2.imread('Ex1.PNG', 0))
-    print (cv2.imread('ex.PNG', 0))
-    labels = w.apply(image)
-    print(labels)
-    ##plt.imshow(labels, cmap='Paired', interpolation='nearest')
-    plt.imshow(labels)
+    print(image)
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2))
+    ## Here, (2,2) means the two diameters of the ellipse.
+    binary = cv2.morphologyEx(image, cv2.MORPH_CLOSE, kernel)
+    print(binary)
+    plt.imshow(binary)
     plt.show()
+    ##gray = cv2.cvtColor('Ex1.PNG', cv2.COLOR_RGB2GRAY)
+    ##ret, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
+    ##kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+    ##binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel)
+    ##print("xxxxxxxx")
+    ##/labels = w.apply(binary)
+    #label = w.apply(image)
+    #print(labels)
+    ##plt.imshow(labels, cmap='Paired', interpolation='nearest')
+    ##/plt.imshow(labels)
+    ##/plt.show()
