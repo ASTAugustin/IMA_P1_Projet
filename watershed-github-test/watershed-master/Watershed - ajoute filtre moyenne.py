@@ -1,5 +1,7 @@
 import numpy as np
 from collections import deque
+
+
 # Implementation of:
 # Pierre Soille, Luc M. Vincent, "Determining watersheds in digital pictures via
 # flooding simulations", Proc. SPIE 1360, Visual Communications and Image Processing
@@ -44,14 +46,14 @@ class Watershed(object):
         total = height * width
         labels = np.full((height, width), self.INIT, np.int32) ## self 表示 this #形成一个元素为-1的矩阵
 
-        reshaped_image = image.reshape(total)  ## grey level of one degree
+        reshaped_image = image.reshape(total) ## grey level of one degree
 
         # [y, x] pairs of pixel coordinates of the flattened image.
         pixels = np.mgrid[0:height, 0:width].reshape(2, -1).T
         # Coordinates of neighbour pixels for each pixel.
         neighbours = np.array([self._get_neighbors(height, width, p) for p in pixels])
 
-        ## Not Clear
+    ## Not Clear
         if len(neighbours.shape) == 3:
             # Case where all pixels have the same number of neighbours.
             neighbours = neighbours.reshape(height, width, -1, 2)
@@ -59,22 +61,22 @@ class Watershed(object):
             # Case where pixels may have a different number of pixels.
             neighbours = neighbours.reshape(height, width)
 
-        indices = np.argsort(reshaped_image)  ## sort of index from small value to big value
+
+        indices = np.argsort(reshaped_image) ## sort of index from small value to big value
         sorted_image = reshaped_image[indices]  ## At hte beginning of this array locate the ligntest pixel
         sorted_pixels = pixels[indices]  ## At hte beginning of this array locate the index of the ligntest pixel
 
         # self.levels evenly spaced steps from minimum to maximum.
-        levels = np.linspace(sorted_image[0], sorted_image[-1],
-                             self.levels)  ## return an array from the min to the max containing levels numbers.
+        levels = np.linspace(sorted_image[0], sorted_image[-1], self.levels) ## return an array from the min to the max containing levels numbers.
         level_indices = []
         current_level = 0
 
         # Get the indices that deleimit pixels with different values.
         for i in range(total):
-            if sorted_image[i] > levels[current_level]:  ## higher than sea level
+            if sorted_image[i] > levels[current_level]: ## higher than sea level
                 # Skip levels until the next highest one is reached.
                 while sorted_image[i] > levels[current_level]: current_level += 1
-                level_indices.append(i)  ## a ladder array
+                level_indices.append(i) ## a ladder array
         level_indices.append(total)
 
         start_index = 0
@@ -130,3 +132,25 @@ class Watershed(object):
 
         return labels
 
+
+if __name__ == "__main__":
+    import numpy as np
+    np.set_printoptions(threshold=np.inf)
+    ##from Watershed import Watershed
+    from PIL import Image
+    import matplotlib.pyplot as plt
+    import cv2
+
+    w = Watershed()
+    image = np.array(cv2.imread('Ex1.PNG', 0))
+    print (cv2.imread('ex.PNG', 0))
+    #kernel = np.ones((5, 5), np.float32) / 25 #noyau de convolution
+    #kernel = np.ones((3, 3), np.float32) / 9
+    kernel = np.ones((4, 4), np.float32) / 16
+    image= cv2.filter2D(image, -1, kernel)
+    #cv2.waitKey()
+    labels = w.apply(image)
+    print(labels)
+    ##plt.imshow(labels, cmap='Paired', interpolation='nearest')
+    plt.imshow(labels)
+    plt.show()
