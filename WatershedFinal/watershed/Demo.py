@@ -18,10 +18,10 @@ import AMR
 np.set_printoptions(threshold=np.inf)
 
 w = Watershed.Watershed()
-image = np.array(cv2.imread('SSS.jpg', 0))
+image = np.array(cv2.imread('TestExemple/Ex3.jpg', 0))
 
 kernel = np.ones((5,5),np.uint8)
-gradient = np.array(cv2.morphologyEx(cv2.imread('SSS.jpg', 0), cv2.MORPH_GRADIENT, kernel))
+gradient = np.array(cv2.morphologyEx(cv2.imread('TestExemple/Ex3.jpg', 0), cv2.MORPH_GRADIENT, kernel))
 
 '''
 
