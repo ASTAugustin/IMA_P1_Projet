@@ -72,16 +72,18 @@ def reconstructionD(mask, f, structure):
         mask = newImage
     return newImage
 
+## compositional morphologiacal reconstruction
 
-def openingreconstruction(mask, f, structure):
-    # 先腐蚀重建再膨胀重建
-    return reconstructionD(reconstructionE(mask, f, structure), f, structure)
+def openingreconstruction(f, structure):
+    imagetmp = reconstructionE(ero( f, flag = 0, num = structure), f, structure)
+    resultat = reconstructionD(ero( f, flag = 1, num = structure), imagetmp, structure)
+    return resultat
 
 
-def closingreconstruction(mask, f, structure):
-    # 先腐蚀重建再膨胀重建
-    return reconstructionE(reconstructionD(mask, f, structure), f, structure)
-
+def closingreconstruction(f, structure):
+    imagetmp = reconstructionD(ero( f, flag = 1, num = structure), f, structure)
+    resultat = reconstructionE(ero( f, flag = 0, num = structure), imagetmp, structure)
+    return resultat
 
 def maxMatrix(image):
     maxM = 0

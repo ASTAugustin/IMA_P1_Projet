@@ -1,4 +1,5 @@
 import ope
+
 import cv2
 import numpy as np
 
@@ -6,8 +7,7 @@ def AMR(input, s, m, err):
     g=input
     for i in range(s, m + 1):
         print ('case',i)
-        f = ope.ero(g, flag=1, num=i)
-        tmp = ope.closingreconstruction(f, g, i)
+        tmp = ope.closingreconstruction(g, i)
         if i == s:
             output = tmp
             errGlobal = ope.maxMatrix(tmp)
